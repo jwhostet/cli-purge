@@ -5,9 +5,9 @@
   "commands": [
     {
       "name": "purge",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "description": "Purge content from the Edge",
-      "bin": "https://github.com/akamai/cli-purge/releases/download/{{.Version}}/akamai-{{.Name}}-{{.Version}}-{{.OS}}{{.Arch}}{{.BinSuffix}}"
+      "bin": "https://github.com/jwhostet/cli-purge/releases/download/{{.Version}}/akamai-{{.Name}}-{{.Version}}-{{.OS}}{{.Arch}}{{.BinSuffix}}"
     }
   ]
 }

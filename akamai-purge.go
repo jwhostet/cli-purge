@@ -28,7 +28,7 @@ import (
 )
 
 const (
-	VERSION = "0.2.1"
+	VERSION = "0.2.2"
 )
 
 type CCUv3PurgeBody struct {
@@ -57,7 +57,7 @@ func main() {
 	app.Name = app_name
 	app.HelpName = app_name
 	app.Usage = "A CLI for Purge"
-	app.Description = "Purge Content from the Edge. URLs/CPCodes may be specified as a list of arguments, or piped in via STDIN"
+	app.Description = "Purge Content from the Edge. URLs/CPCodes/Cache Tags may be specified as a list of arguments, or piped in via STDIN"
 	app.Version = VERSION
 	app.Copyright = "Copyright (C) Akamai Technologies, Inc"
 	app.Authors = []cli.Author{
@@ -94,6 +94,10 @@ func main() {
 			Usage: "Purge by CPCode instead (beta)",
 		},
 		cli.BoolFlag{
+			Name:  "tag",
+			Usage: "Purge by Cache Tag instead (beta)",
+		},
+		cli.BoolFlag{
 			Name:  "production",
 			Usage: "(default)",
 		},
@@ -106,14 +110,14 @@ func main() {
 		{
 			Name:      "invalidate",
 			Usage:     "Invalidate content",
-			ArgsUsage: "[URL...] or [CP Codes...]",
+			ArgsUsage: "[URL...] or [CP Codes...] or [Cache Tags...]",
 			Action:    cmdInvalidate,
 			Flags:     cmdFlags,
 		},
 		{
 			Name:      "delete",
 			Usage:     "Delete content",
-			ArgsUsage: "[URL...] or [CP Codes...]",
+			ArgsUsage: "[URL...] or [CP Codes...] or [Cache Tags...]",
 			Action:    cmdDelete,
 			Flags:     cmdFlags,
 		},
@@ -152,6 +156,8 @@ func purge(purgeType string, c *cli.Context) error {
 
 	if c.IsSet("cpcode") {
 		purgeBy = "cpcode"
+	} else if c.IsSet("tag") {
+		purgeBy = "tag"
 	}
 
 	config, err := edgegrid.Init(c.GlobalString("edgerc"), c.GlobalString("section"))
